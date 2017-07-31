@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@Styles.Render("~/Content/bootstrap.css")
+
+<h1 class="h1">Welcome to Pramati bank</h1>
+</br>
+<center>
+    <p>
+        <b> The Bank That Begins With "You" </b>
+    </p>
+    @*</br></br>
+    <a href="@Url.Action("Login","Home")" class="btn btn-primary">Login</a></br>
+    </br>
+    <p>OR</p>
+    </br>
+    <a href="@Url.Action("Register","Home")" class="btn btn-primary">Create Account</a>*@
+    <a href="@Url.Action("GetAccounts","Home")" class="btn btn-primary">Grid</a>
+</center></br></br></br>

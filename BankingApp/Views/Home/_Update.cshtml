@@ -1,0 +1,33 @@
+﻿@model BankingApp.Models.AccountModel
+
+@using (Html.BeginForm("Update", "Home", FormMethod.Post, new { @id = "update-form" }))
+{
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.HiddenFor(x => x.AccountNumber)
+            @Html.HiddenFor(x => x.TransactionAmount, new { Value = Model.Balance })
+            @Html.HiddenFor(x => x.CustomerId)
+        </div>
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(x => x.Customer.FirstName)
+            @Html.TextBoxFor(x => x.Customer.FirstName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Customer.FirstName, null, new { style = "color:red;" })
+        </div>
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(x => x.Customer.LastName)
+            @Html.TextBoxFor(x => x.Customer.LastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Customer.LastName, null, new { style = "color:red;" })
+        </div>
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(x => x.Customer.Address)
+            @Html.TextBoxFor(x => x.Customer.Address, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Customer.Address, null, new { style = "color:red;" })
+        </div>
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(x => x.Customer.PhoneNumber)
+            @Html.TextBoxFor(x => x.Customer.PhoneNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Customer.PhoneNumber, null, new { style = "color:red;" })
+        </div>
+    </div>
+}
+

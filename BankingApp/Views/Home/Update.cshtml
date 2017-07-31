@@ -1,0 +1,75 @@
+﻿@model BankingApp.Models.AccountModel
+@{
+    ViewBag.Title = "Update";
+}
+
+<fieldset>
+    <legend>Update</legend>
+    @using (Html.BeginForm("Update", "Home", FormMethod.Post, new { @id = "update-form" }))
+    {
+        <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.HiddenFor(x => x.AccountNumber)
+                @Html.HiddenFor(x => x.TransactionAmount, new { Value = Model.Balance })
+                @Html.HiddenFor(x => x.CustomerId)
+            </div>
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(x => x.Customer.FirstName)
+                @Html.TextBoxFor(x => x.Customer.FirstName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Customer.FirstName, null, new { style = "color:red;" })
+            </div>
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(x => x.Customer.LastName)
+                @Html.TextBoxFor(x => x.Customer.LastName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Customer.LastName, null, new { style = "color:red;" })
+            </div>
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(x => x.Customer.Address)
+                @Html.TextBoxFor(x => x.Customer.Address, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Customer.Address, null, new { style = "color:red;" })
+            </div>
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(x => x.Customer.PhoneNumber)
+                @Html.TextBoxFor(x => x.Customer.PhoneNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Customer.PhoneNumber, null, new { style = "color:red;" })
+            </div>
+            <div class="col-md-12 form-group">
+                @*<input type="submit" value="Update" id="form-submit"/>*@
+                <button id="form-submit" type="button">Submit </button>
+            </div>
+        </div>
+    }
+</fieldset>
+
+
+@section Scripts{
+    <script>
+        var $updateFormValidator;
+        $(function () {
+            $updateFormValidator = $('#update-form').validate();
+            $('#form-submit').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                swal({
+                    title: "Are you sure?",
+                    text: "Your changes will be saved!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Save",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            $('#update-form').submit();
+                            swal("Done!", "Your Records are Updated Successfully", "success");
+                        } else {
+                            swal("Cancelled", "Your changes are not saved", "error");
+                        }
+                    });
+            });
+        });
+    </script>
+}

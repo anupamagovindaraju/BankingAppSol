@@ -1,0 +1,11 @@
+﻿@model BankingApp.Models.AccountModel
+
+@using (Html.BeginForm("Delete", "Home", FormMethod.Post, new { @id = "delete-form" }))
+{
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(x => x.AccountNumber)
+            @Html.TextBoxFor(x => x.AccountNumber, new { style = "color:red;" })
+        </div>
+    </div>
+}

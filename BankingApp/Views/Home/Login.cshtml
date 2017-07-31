@@ -1,0 +1,20 @@
+﻿@model BankingApp.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<center>
+    <h3>@ViewBag.message</h3>
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        @Html.LabelFor(x => x.AccountNumber)
+        @Html.TextBoxFor(x => x.AccountNumber, new { style = "color:red;" })
+        <p> @Html.ValidationMessageFor(x => x.AccountNumber, null, new { style = "color:red;" })</p>
+
+        <input type="submit" value="Login" />
+    }
+
+    <br />
+</center>

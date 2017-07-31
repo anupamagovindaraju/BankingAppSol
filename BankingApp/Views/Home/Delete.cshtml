@@ -1,0 +1,21 @@
+﻿@model BankingApp.Models.AccountModel
+@{
+    ViewBag.Title = "Delete";
+}
+<fieldset>
+    <legend>Delete</legend>
+    @using (Html.BeginForm("Delete", "Home", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(x => x.AccountNumber)
+                @Html.TextBoxFor(x => x.AccountNumber, new { style = "color:red;" })
+            </div>
+            <div class="col-md-12 form-group">
+                <input type="submit" value="DeleteAccount" />
+            </div>
+        </div>
+    }
+
+
+</fieldset>

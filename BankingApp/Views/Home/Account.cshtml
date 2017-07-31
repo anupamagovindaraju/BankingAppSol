@@ -1,0 +1,19 @@
+﻿@model BankingApp.Models.AccountModel
+@{
+    ViewBag.Title = "Account";
+}
+
+<center>
+    <h3>@ViewBag.message</h3>
+    @using (Html.BeginForm("Deposit", "Home", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.AccountNumber)
+        @Html.LabelFor(x => x.Balance)
+        @Html.TextBoxFor(x => x.Balance)
+       <p> @Html.ValidationMessageFor(x => x.AccountNumber, null, new { style = "color:red;" })</p>
+
+        <input type="submit" value="Deposit" />
+    }
+
+    <br />
+</center>

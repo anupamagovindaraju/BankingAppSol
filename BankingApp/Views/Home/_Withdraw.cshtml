@@ -1,0 +1,20 @@
+﻿@model BankingApp.Models.AccountModel
+
+@using (Html.BeginForm("Withdraw", "Home", FormMethod.Post, new { @id = "withdraw-form" }))
+{
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.ValidationSummary("Following are the errors:")
+            @Html.HiddenFor(x => x.AccountNumber)
+        </div>
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(x => x.Balance)
+            @Html.TextBoxFor(x => x.Balance, new { style = "color:black;"})
+        </div>
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(x => x.TransactionAmount)
+            @Html.TextBoxFor(x => x.TransactionAmount)
+            @Html.ValidationMessageFor(x => x.TransactionAmount, null, new { style = "color:red;" })
+        </div>
+    </div>
+}

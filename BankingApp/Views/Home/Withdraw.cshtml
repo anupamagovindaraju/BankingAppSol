@@ -1,0 +1,28 @@
+﻿@model BankingApp.Models.AccountModel
+@{
+    ViewBag.Title = "Withdraw";
+}
+<fieldset>
+    <legend>Withdraw</legend>
+    @using (Html.BeginForm("Withdraw", "Home", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.ValidationSummary("Following are the errors:")
+                @Html.HiddenFor(x => x.AccountNumber)
+            </div>
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(x => x.Balance)
+                @Html.TextBoxFor(x => x.Balance, new { style = "color:black;", disabled = "true" })
+            </div>
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(x => x.TransactionAmount)
+                @Html.TextBoxFor(x => x.TransactionAmount)
+                @Html.ValidationMessageFor(x => x.TransactionAmount, null, new { style = "color:red;" })
+            </div>
+            <div class="col-md-12 form-group">
+                <input type="submit" class="btn btn-primary btn-sm" name="Withdraw" value="Withdraw" />
+            </div>
+        </div>
+    }
+</fieldset>

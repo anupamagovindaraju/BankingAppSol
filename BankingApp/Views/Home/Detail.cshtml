@@ -1,0 +1,73 @@
+﻿@model BankingApp.Models.AccountModel
+@{
+    ViewBag.Title = "Detail";
+}
+<center>
+    <h2>Account Details</h2>
+
+    @if (Model.Customer != null)
+    {
+    <h3>
+        @Html.LabelFor(x => x.Customer.FirstName):
+        @Model.Customer.FirstName
+    </h3>
+    <h3>
+        @Html.LabelFor(x => x.Customer.LastName):
+        @Model.Customer.LastName
+    </h3>
+    <h3>
+        @Html.LabelFor(x => x.Customer.PhoneNumber):
+        @Model.Customer.PhoneNumber
+    </h3>
+    }
+    @if (Model.AccountNumber != null)
+    {
+    <h3>
+        @Html.LabelFor(x => x.AccountNumber):
+        @Model.AccountNumber
+    </h3>
+    @*<h3>
+            @Html.LabelFor(x => x.TransactionAmount):
+            @Model.TransactionAmount
+        </h3>*@
+    <h3>
+        @Html.LabelFor(x => x.CustomerId):
+        @Model.CustomerId
+    </h3>
+    <h3>
+        @Html.LabelFor(x => x.Balance):
+        @Model.Balance
+    </h3>
+
+    }
+
+    <a href="@Url.Action("Deposit", "Home", new { accountNumber = Model.AccountNumber })" class="btn btn-primary">Deposit</a>
+    <a href="@Url.Action("Withdraw", "Home", new { accountNumber = Model.AccountNumber })" class="btn btn-primary">Withdraw</a>
+    <a href="@Url.Action("Update", "Home", new { accountNumber = Model.AccountNumber })" class="btn btn-primary">Update</a>
+    <a href="@Url.Action("Delete", "Home", new { accountNumber = Model.AccountNumber })" class="btn btn-primary">Delete</a>
+</center>
+
+<section>
+    <table id="grid" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Address</th>
+                <th>PhoneNumber</th>
+                <th>AccountNumber</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Address</th>
+                <th>PhoneNumber</th>
+                <th>AccountNumber</th>
+                <th>Balance</th>
+            </tr>
+        </tfoot>
+    </table>
+</section>

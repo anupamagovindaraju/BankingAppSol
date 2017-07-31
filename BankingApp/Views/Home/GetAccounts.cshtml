@@ -1,0 +1,342 @@
+﻿@model List<BankingApp.Models.AccountModel>
+@{
+    ViewBag.Title = "GetAccounts";
+}
+
+<fieldset>
+    <legend>GetAccounts</legend>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <a href="javascript:void(0);" class="record_register">New User</a>
+        </div>
+        <div class="col-md-12">
+            <section>
+                <table id="grid" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>Address</th>
+                            <th>PhoneNumber</th>
+                            <th>AccountNumber</th>
+                            <th>Balance</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model)
+                        {
+                            <tr data-json="@Json.Encode(m)">
+                                <td data-prop="Customer.FirstName">@m.Customer.FirstName</td>
+                                <td data-prop="Customer.LastName">@m.Customer.LastName</td>
+                                <td>@m.Customer.Address</td>
+                                <td>@m.Customer.PhoneNumber</td>
+                                <td>@m.AccountNumber</td>
+                                <td>@m.Balance</td>
+                                <td>
+                                    <a href="javascript:void(0);" class="record_update" data-accountnumber="@m.AccountNumber">Update</a>&nbsp;|
+                                    <a href="javascript:void(0);" class="record_withdraw" data-accountnumber="@m.AccountNumber">Withdraw</a>&nbsp;|
+                                    <a href="javascript:void(0);" class="record_deposit" data-accountnumber="@m.AccountNumber">Deposit</a>&nbsp;|
+                                    <a href="javascript:void(0);" class="record_delete" data-accountnumber="@m.AccountNumber">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</fieldset>
+
+@*no changes*@
+<div class="modal fade" tabindex="-1" id="bank-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="action-btn">Submit</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@section scripts{
+    <script type="text/javascript">
+        function objectifyForm(formArray) {
+            var returnArray = {};
+            for (var i = 0; i < formArray.length; i++) {
+                returnArray[formArray[i]['name']] = formArray[i]['value'];
+            }
+            return returnArray;
+        }
+
+        function submitUpdate(callback) {
+            var form = $("#bank-modal").find("form");
+            var formDataArray = form.serializeArray();
+            var jsonObject = objectifyForm(formDataArray);
+            var actionUrl = "@Url.Action("Update", "Home")";
+
+            console.log(jsonObject);
+
+            $.ajax({
+                url: actionUrl,
+                type: "POST",
+                data: jsonObject,
+                success: callback
+            });
+        }
+
+          function submitWithdraw(callback) {
+            var form = $("#bank-modal").find("form");
+            var formDataArray = form.serializeArray();
+            var jsonObject = objectifyForm(formDataArray);
+            var actionUrl = "@Url.Action("Withdraw","Home")";
+
+            $.ajax(
+                {
+                    url: actionUrl,
+                    type: "POST",
+                    data: jsonObject,
+                    success: callback
+                });
+          }
+
+          function submitDeposit(callback) {
+              var form = $("#bank-modal").find("form");
+              var formDataArray = form.serializeArray();
+              var jsonObject = objectifyForm(formDataArray);
+              var actionUrl = "@Url.Action("Deposit","Home")";
+
+              $.ajax(
+                  {
+                      url: actionUrl,
+                      type: "POST",
+                      data: jsonObject,
+                      success: callback
+
+                  });
+          }
+
+         function submitDelete(callback) {
+              var form = $("#bank-modal").find("form");
+              var formDataArray = form.serializeArray();
+              var jsonObject = objectifyForm(formDataArray);
+              var actionUrl = "@Url.Action("Delete","Home")";
+
+              $.ajax(
+                  {
+                      url: actionUrl,
+                      type: "POST",
+                      data: jsonObject,
+                      success: callback
+
+                  });
+          }
+
+         function submitRegister(callback) {
+              var form = $("#bank-modal").find("form");
+              var formDataArray = form.serializeArray();
+              var jsonObject = objectifyForm(formDataArray);
+              var actionUrl = "@Url.Action("Register","Home")";
+
+              $.ajax(
+                  {
+                      url: actionUrl,
+                      type: "POST",
+                      data: jsonObject,
+                      success: callback
+
+                  });
+          }
+
+
+        function update(e) {
+            var accountNumber = $(e.target).data("accountnumber");
+            var actionUrl = "@Url.Action("_Update", "Home")";
+
+            @*passing data to the form based on operation*@
+            $.get(actionUrl, { accountNumber: accountNumber }, function (response) {
+                $(".modal-title").text("Udpate form");
+                $(".modal-body").html(response);
+                $("#bank-modal").modal("show");
+                $("#action-btn").click(function () {
+                    submitUpdate(function (innerResponse) {
+                        if (innerResponse == true) {
+                            $(".modal-title").text("");
+                            $(".modal-body").html("");
+                            $("#bank-modal").modal("hide");
+                            alert("Record updated successfully");
+                            window.location.reload(false);
+                            $("#action-btn").unbind("click");
+                        }
+                        else {
+                            $(".modal-body").html(innerResponse);
+                        }
+
+                    });
+                })
+            });
+          }
+
+        function withdraw(e) {
+            var accountNumber = $(e.target).data("accountnumber");
+            var actionUrl = "@Url.Action("_Withdraw","Home")";
+
+            $.get(actionUrl, { accountNumber: accountNumber }, function (response) {
+                $(".modal-title").text("Withdraw");
+                $(".modal-body").html(response);
+                $("#bank-modal").modal("show");
+                $("#action-btn").click(function () {
+                    submitWithdraw(function (innerResponse) {
+                        if (innerResponse == true) {
+                            $(".modal-title").text("");
+                            $(".modal-body").html("");
+                            $("#bank-modal").modal("hide");
+                            alert("Withdraw successfull");
+                            window.location.reload(false);
+                            $("#action-btn").unbind("click");
+                        }
+                        else {
+
+                            $(".modal-body").html(innerResponse);
+                        }
+                    });
+                })
+            });
+          }
+
+        function deposit(e) {
+            var accountNumber = $(e.target).data("accountnumber");
+            var actionUrl = "@Url.Action("_Deposit","Home")";
+            $.get(actionUrl, { accountNumber: accountNumber }, function (response) {
+                $(".modal-title").text("Deposit");
+                $(".modal-body").html(response);
+                $("#bank-modal").modal("show");
+                $("#action-btn").click(function () {
+                    submitDeposit(function (innerResponse) {
+                        if (innerResponse == true) {
+                        $(".modal-title").text("");
+                        $(".modal-body").html("");
+                       $("#bank-modal").modal("hide");
+                        alert("Deposit successful");
+                        window.location.reload(false);
+                        $("#action-btn").unbind("click");
+                    }
+                    else {
+                        $(".modal-body").html(innerResponse);
+                           // alert("Invalid Data!");
+                        }
+
+                });
+            })
+        });
+        }
+
+         function del(e) {
+            var accountNumber = $(e.target).data("accountnumber");
+            var actionUrl = "@Url.Action("_Delete", "Home")";
+            $.get(actionUrl, { accountNumber: accountNumber }, function (response) {
+                $(".modal-title").text("Delete");
+                $(".modal-body").html(response);
+                $("#bank-modal").modal("show");
+                $("#action-btn").click(function () {
+                    submitDelete(function (innerResponse) {
+                        if (innerResponse == true) {
+                        $(".modal-title").text("");
+                        $(".modal-body").html("");
+                        $("#bank-modal").modal("hide");
+                        alert("Delete successful");
+                        window.location.reload(false);
+                        $("#action-btn").unbind("click");
+                    }
+                    else {
+                        $(".modal-body").html(innerResponse);
+                        }
+
+                });
+            })
+        });
+        }
+
+
+         function register(e) {
+            //var accountNumber = $(e.target).data("accountnumber");
+            var actionUrl = "@Url.Action("_Register", "Home")";
+            $.get(actionUrl, function (response) {
+                $(".modal-title").text("Register");
+                $(".modal-body").html(response);
+                $("#bank-modal").modal("show");
+                $("#action-btn").click(function () {
+                    submitRegister(function (innerResponse) {
+                        if (innerResponse == true) {
+                        $(".modal-title").text("");
+                        $(".modal-body").html("");
+                        $("#bank-modal").modal("hide");
+                        alert("Register successful");
+                        window.location.reload(false);
+                        $("#action-btn").unbind("click");
+                    }
+                    else {
+                        $(".modal-body").html(innerResponse);
+                        }
+
+                });
+            })
+        });
+      }
+
+         $(function () {
+             $(".record_update").click(update);
+             $(".record_withdraw").click(withdraw);
+             $(".record_deposit").click(deposit);
+             $(".record_delete").click(del);
+             $(".record_register").click(register);
+
+             
+
+             $("#grid").DataTable({
+                 columnDefs: [
+                     { orderable: false, target: 6 }
+                   ]
+             });
+             
+             $.fn.grid = function () {
+                   var element = $(this)
+                   element.find('td').on('change', function (e) {
+                       var td = $(e.currentTarget);
+                       var tr = $(e.currentTarget).parents("tr");
+                       
+
+                       var jsonData= tr.data("json");
+                       var propName = td.data("prop");
+                       var changedValue = td.text();
+
+                       jsonData[propName] = changedValue;
+                       jsonData["TransactionAmount"] = 0;
+                       console.log(jsonData);
+
+                       var actionUrl = "@Url.Action("Update","Home")";
+
+                    $.ajax({
+                            url: actionUrl,
+                            type: "POST",
+                            data: jsonData,
+                            success: function (data) {
+                                console.log(data);
+                                alert("update successfull");
+                            }
+                        });
+                });
+             }
+            $('#grid').editableTableWidget();
+            $('#grid').grid();
+         });
+
+    </script>
+}
